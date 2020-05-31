@@ -14,7 +14,9 @@
  */
 class Spalenza_ExternalMessages_Model_Observer
 {
-
+    /**
+     * @param Varien_Event_Observer $observer
+     */
     public function orderStatusChanging(Varien_Event_Observer $observer)
     {
         //Mage::dispatchEvent('admin_session_user_login_success', array('user'=>$user));

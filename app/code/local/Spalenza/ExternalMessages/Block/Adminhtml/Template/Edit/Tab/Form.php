@@ -30,8 +30,8 @@ class Spalenza_ExternalMessages_Block_Adminhtml_Template_Edit_Tab_Form extends M
             "name" => "title",
         ));
 
-        $fieldset->addField("content", "text", array(
-            "label" => Mage::helper("externalmessages")->__("Message"),
+        $fieldset->addField("content", "textarea", array(
+            "label" => Mage::helper("externalmessages")->__("Template"),
             "class" => "required-entry",
             "required" => true,
             "name" => "content",

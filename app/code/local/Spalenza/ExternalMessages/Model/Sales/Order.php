@@ -20,16 +20,22 @@ class Spalenza_ExternalMessages_Model_Sales_Order extends Mage_Sales_Model_Order
      * Сomplete and closed states are encapsulated intentionally, see the _checkState()
      *
      * @param string $state
-     * @param string|bool $status
+     * @param bool $status
      * @param string $comment
-     * @param bool $isCustomerNotified
-     * @param $shouldProtectState
-     * @return Mage_Sales_Model_Order
+     * @param null $isCustomerNotified
+     * @param bool $shouldProtectState
+     * @return $this|Mage_Sales_Model_Order
+     * @throws Mage_Core_Exception
      */
     protected function _setState($state, $status = false, $comment = '',
                                  $isCustomerNotified = null, $shouldProtectState = false)
     {
-        Mage::log('_setState: ' . $state . ' - ' . $status, null, 'status.log');
+        /** @var Spalenza_ExternalMessages_Helper_Data $helper */
+        $helper = Mage::helper('externalmessages');
+
+        if ($helper->isModuleEnabled() && $helper->isDebug()) {
+            Mage::log('_setState: ' . $state . ' - ' . $status, null, 'change_status.log');
+        }
 
         // attempt to set the specified state
         if ($shouldProtectState) {
@@ -40,17 +46,24 @@ class Spalenza_ExternalMessages_Model_Sales_Order extends Mage_Sales_Model_Order
             }
         }
 
-        // dispatch an event before we attempt to do anything
-        Mage::dispatchEvent('sales_order_status_before',
-            array(
-                'order' => $this,
-                'state' => $state,
-                'status' => $status,
-                'comment' => $comment,
-                'isCustomerNotified' => $isCustomerNotified,
-                'shouldProtectState' => $shouldProtectState
-            )
-        );
+        if ($helper->isModuleEnabled()) {
+            $stateBefore = $this->getState();
+            $statusBefore = $this->getStatus();
+
+            // dispatch an event before we attempt to do anything
+            Mage::dispatchEvent('sales_order_status_before',
+                array(
+                    'order' => $this,
+                    'state' => $state,
+                    'status' => $status,
+                    'state_before' => $stateBefore,
+                    'status_before' => $statusBefore,
+                    'comment' => $comment,
+                    'isCustomerNotified' => $isCustomerNotified,
+                    'shouldProtectState' => $shouldProtectState
+                )
+            );
+        }
 
         $this->setData('state', $state);
         // add status history
@@ -63,16 +76,20 @@ class Spalenza_ExternalMessages_Model_Sales_Order extends Mage_Sales_Model_Order
             $history->setIsCustomerNotified($isCustomerNotified); // for backwards compatibility
         }
 
-        // dispatch an event after status has changed
-        Mage::dispatchEvent('sales_order_status_after',
-            array('order' => $this,
-                'state' => $state,
-                'status' => $status,
-                'comment' => $comment,
-                'isCustomerNotified' => $isCustomerNotified,
-                'shouldProtectState' => $shouldProtectState
-            )
-        );
+        if ($helper->isModuleEnabled()) {
+            // dispatch an event after status has changed
+            Mage::dispatchEvent('sales_order_status_after',
+                array('order' => $this,
+                    'state' => $state,
+                    'status' => $status,
+                    'state_before' => $stateBefore,
+                    'status_before' => $statusBefore,
+                    'comment' => $comment,
+                    'isCustomerNotified' => $isCustomerNotified,
+                    'shouldProtectState' => $shouldProtectState
+                )
+            );
+        }
 
         return $this;
     }

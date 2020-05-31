@@ -86,16 +86,16 @@
             </externalmessages_read>
         </resources>
         <events>
-            <sales_order_status_before>
+            <sales_order_status_after>
                 <observers>
-                    <sales_order_status_before_external_message_handler>
+                    <sales_order_status_after_external_message_handler>
                         <type>model</type>
                         <class>externalmessages/observer</class>
                         <method>orderStatusChanging</method>
                         <args></args>
-                    </sales_order_status_before_external_message_handler>
+                    </sales_order_status_after_external_message_handler>
                 </observers>
-            </sales_order_status_before>
+            </sales_order_status_after>
         </events>
     </global>
     <admin>
