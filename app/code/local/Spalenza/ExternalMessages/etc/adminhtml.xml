@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <whatsapp_bot translate="title" module="externalmessages">
+                                        <title>External Messages</title>
+                                        <sort_order>500</sort_order>
+                                    </whatsapp_bot>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

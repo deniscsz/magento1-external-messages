@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+  <externalmessages_adminhtml_message_index>
+	<reference name="content">
+	  <block type="externalmessages/adminhtml_message" name="message" />
+	</reference>
+  </externalmessages_adminhtml_message_index>
+  <externalmessages_adminhtml_template_index>
+	<reference name="content">
+	  <block type="externalmessages/adminhtml_template" name="template" />
+	</reference>
+  </externalmessages_adminhtml_template_index>
+</layout>

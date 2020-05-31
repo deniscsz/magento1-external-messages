@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<layout version="1.0.0">
+  <externalmessages_index_index>
+    <reference name="root">
+      <action method="setTemplate"><template>page/1column.phtml</template></action>
+    </reference>
+    <reference name="content">
+      <block type="externalmessages/index" name="externalmessages_index" template="externalmessages/index.phtml"/>
+    </reference>
+  </externalmessages_index_index> 
+</layout>
+	
