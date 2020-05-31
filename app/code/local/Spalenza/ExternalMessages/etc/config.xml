@@ -22,6 +22,15 @@
                 </externalmessages>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <consultoras>
+                    <files>
+                        <default>Spalenza_ExternalMessages.csv</default>
+                    </files>
+                </consultoras>
+            </modules>
+        </translate>
     </frontend>
     <global>
         <helpers>
@@ -99,6 +108,15 @@
                 </args>
             </externalmessages>
         </routers>
+        <translate>
+            <modules>
+                <consultoras>
+                    <files>
+                        <default>Spalenza_ExternalMessages.csv</default>
+                    </files>
+                </consultoras>
+            </modules>
+        </translate>
     </admin>
     <adminhtml>
         <menu>
