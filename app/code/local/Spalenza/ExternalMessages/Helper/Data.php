@@ -25,6 +25,9 @@ class Spalenza_ExternalMessages_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_CONFIG_PATH_GENERAL = 'settings/';
     const XML_CONFIG_PATH_API = 'api/';
 
+    const RULE_STATUS_CHANGES = 'status';
+    const RULE_TRACKING = 'tracking';
+
     /**
      * Symbol convert table
      *
@@ -179,6 +182,16 @@ class Spalenza_ExternalMessages_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Retrieves the page size
+     *
+     * @return null|string
+     */
+    public function getPageSize()
+    {
+        return $this->getStoreConfig('page_size');
+    }
+
+    /**
      * Validate a HTTP Request Basic Authorization
      * @param Zend_Controller_Request_Http $request
      * @return bool
@@ -210,5 +223,28 @@ class Spalenza_ExternalMessages_Helper_Data extends Mage_Core_Helper_Abstract
 
         // Validate token from request and system config
         return $token == $this->getToken();
+    }
+
+    /**
+     * @return Spalenza_ExternalMessages_Model_Mysql4_Message_Collection
+     */
+    public function getValidMessages()
+    {
+        /** @var Spalenza_ExternalMessages_Model_Mysql4_Message_Collection $messages */
+        $messages = Mage::getModel('externalmessages/message')->getCollection();
+        $messages->addFieldToFilter('sent_at', array('null' => true));
+        return $messages;
+    }
+
+    /**
+     * @param $ids
+     * @return Spalenza_ExternalMessages_Model_Mysql4_Message_Collection
+     */
+    public function getMessagesByIds($ids)
+    {
+        /** @var Spalenza_ExternalMessages_Model_Mysql4_Message_Collection $messages */
+        $messages = Mage::getModel('externalmessages/message')->getCollection();
+        $messages->addFieldToFilter('message_id', array('in' => $ids));
+        return $messages;
     }
 }

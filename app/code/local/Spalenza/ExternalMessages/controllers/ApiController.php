@@ -90,7 +90,7 @@ class Spalenza_ExternalMessages_ApiController extends Mage_Core_Controller_Front
      */
     protected function _getPageSize()
     {
-        $pageSize = $this->getHelper()->getPageZize();
+        $pageSize = $this->getHelper()->getPageSize();
 
         if (is_numeric($pageSize) && (int) $pageSize > 0) {
             return (int) $pageSize;
@@ -208,7 +208,14 @@ class Spalenza_ExternalMessages_ApiController extends Mage_Core_Controller_Front
         // Operation: GET retrieve messages to send
         if ($request->isGet()) {
             try {
+                $messages = $this->getHelper()->getValidMessages();
+                $collection = $this->_prepareCollection($messages);
 
+                if ($collection === false) {
+                    return $this->toJson(array('message' => 'Invalid page'), 400);
+                }
+
+                return $this->toJson($collection->getData());
             } catch (\Exception $e) {
                 Mage::logException($e);
                 return $this->toJson(array('message' => 'Unable to retrieve messages (Internal Error)'), 500);
@@ -218,7 +225,25 @@ class Spalenza_ExternalMessages_ApiController extends Mage_Core_Controller_Front
         // Operation: POST confirm that messages were sent
         if ($request->isPost()) {
             try {
+                if (false == $request->has('ids')) {
+                    return $this->toJson(array('message' => 'Invalid params'), 400);
+                }
 
+                $ids = $request->get('ids');
+                if (empty($ids)) {
+                    return $this->toJson(array('message' => 'Invalid params'), 400);
+                }
+
+                /** @var Spalenza_ExternalMessages_Helper_Processor $processor */
+                $processor = $this->getHelper('externalmessages/processor');
+                $messages = $processor->getMessagesByIds($ids);
+                if ($messages->getSize()) {
+                    foreach ($messages as $message) {
+                        $message->setSentAt(\gmdate('Y-m-d H:i:s'))->save();
+                    }
+                }
+
+                return $this->toJson($messages->toArray(), 200);
             } catch (\Exception $e) {
                 Mage::logException($e);
                 return $this->toJson(array('message' => 'Unable to retrieve messages (Internal Error)'), 500);

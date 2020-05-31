@@ -19,9 +19,12 @@ class Spalenza_ExternalMessages_Model_Observer
      */
     public function orderStatusChanging(Varien_Event_Observer $observer)
     {
-        //Mage::dispatchEvent('admin_session_user_login_success', array('user'=>$user));
-        //$user = $observer->getEvent()->getUser();
-        //$user->doSomething();
-    }
+        /** @var Spalenza_ExternalMessages_Helper_Processor $helperProcessor */
+        $helperProcessor = Mage::helper('externalmessages/processor');
 
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getEvent()->getOrder();
+
+        $helperProcessor->processOrderStatusChanging($order);
+    }
 }

@@ -129,9 +129,12 @@ class Spalenza_ExternalMessages_Block_Adminhtml_Template_Grid extends Mage_Admin
 
     static public function getOptionRules()
     {
+        /** @var Spalenza_ExternalMessages_Helper_Data $helperData */
+        $helperData = Mage::helper('externalmessages');
+
         $data_array = array();
-        $data_array[0] = Mage::helper('externalmessages')->__('Rule 1');
-        $data_array[1] = Mage::helper('externalmessages')->__('Rule 2');
+        $data_array[$helperData::RULE_STATUS_CHANGES] = Mage::helper('externalmessages')->__('Status Changes');
+        $data_array[$helperData::RULE_TRACKING] = Mage::helper('externalmessages')->__('Tracking Progress');
         return ($data_array);
     }
 

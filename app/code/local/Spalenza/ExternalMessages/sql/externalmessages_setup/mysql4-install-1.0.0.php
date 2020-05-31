@@ -22,6 +22,7 @@ $tableMessage = $installer
         null,
         array(
             'primary'  => true,
+            'identity' => true,
             'nullable' => false,
             'unsigned' => true
         ),
@@ -82,6 +83,7 @@ $tableTemplate = $installer
         null,
         array(
             'primary'  => true,
+            'identity' => true,
             'nullable' => false,
             'unsigned' => true
         ),

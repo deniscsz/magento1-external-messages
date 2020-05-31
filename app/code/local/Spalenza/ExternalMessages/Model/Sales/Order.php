@@ -79,7 +79,8 @@ class Spalenza_ExternalMessages_Model_Sales_Order extends Mage_Sales_Model_Order
         if ($helper->isModuleEnabled()) {
             // dispatch an event after status has changed
             Mage::dispatchEvent('sales_order_status_after',
-                array('order' => $this,
+                array(
+                    'order' => $this,
                     'state' => $state,
                     'status' => $status,
                     'state_before' => $stateBefore,
